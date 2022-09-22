@@ -1,0 +1,185 @@
+Part -2
+
+1)SELECT MEMBER_NAME FROM MEMBER
+WHERE ACC_OPEN_DATE>'31-DEC-2005' AND ACC_OPEN_DATE <'1-JAN-2007';
+
+2)SELECT BOOK_NAME,AUTHOR FROM BOOK
+WHERE AUTHOR='LONI' AND COST>600;
+
+3)SELECT LIB_ISSUE_ID,BOOK_NO,MEMBER_ID,ISSUE_DATE,RETURN_DATE FROM ISSUE
+WHERE COMMENTS='PENDING';
+
+4)UPDATE ISSUE SET RETURN_DATE='31-DEC-06'
+WHERE RETURN_DATE=NULL AND (LIB_ISSUE_ID!=7005 OR LIB_ISSUE_ID!=7006);
+
+5)SELECT LIB_ISSUE_ID,BOOK_NO,MEMBER_ID,ISSUE_DATE,RETURN_DATE FROM ISSUE
+WHERE (SYSDATE-ISSUE_DATE)>30 AND (ISSUE_DATE-RETURN_DATE)>30;
+
+6)SELECT BOOK_NAME FROM BOOK
+WHERE (COST BETWEEN 500 AND 750) AND CATEGORY='DATABASE';
+
+7)SELECT BOOK_NAME FROM BOOK
+WHERE CATEGORY IN('SCIENCE','DATABASE','FICTION','MANAGEMENT');
+
+8)SELECT MEMBER_ID,MEMBER_NAME,PENALTY_AMOUNT FROM MEMBER
+ORDER BY PENALTY_AMOUNT DESC;
+
+9)SELECT BOOK_NAME,COST FROM BOOK
+ORDER BY BOOK_NAME,COST DESC;
+
+10)SELECT BOOK_NAME FROM BOOK
+WHERE BOOK_NAME LIKE '%SQL%';
+
+11)SELECT MEMBER_NAME FROM MEMBER
+WHERE MEMBER_NAME LIKE ('G%I%' ||'R%I%');
+
+12)SELECT INITCAP(BOOK_NAME),UPPER(AUTHOR) FROM BOOK
+ORDER BY 1 DESC;
+
+13)SELECT BOOK_NO, CONCAT('IS WRRITTEN ', 'BY') " ---------------- ", AUTHOR AS NAME FROM BOOK;
+
+
+14)SELECT LIB_ISSUE_ID,BOOK_NO,TO_CHAR(TO_DATE(ISSUE_DATE,'DD-MM-YY'),'Day,Month,DD,YYYY') ,TO_CHAR(TO_DATE(RETURN_DATE,'DD-MM-YY'),'Day,Month,DD,YYYY')
+ FROM ISSUE
+ WHERE MEMBER_ID=101; 
+
+15)SELECT CATEGORY,
+DECODE(CATEGORY,'DATABASE','D','SCIENCE','S','RDBMS','R','OTHERS','O')
+FROM BOOK;
+
+16)SELECT CATEGORY,
+DECODE(CATEGORY,'DATABASE','D','SCIENCE','S','RDBMS','R','OTHERS','O')
+FROM BOOK
+
+17)SELECT CONCAT( RPAD(BOOK_NAME,20,'*'),LPAD(AUTHOR,20,'*') )
+FROM BOOK;
+
+18)SELECT LIB_ISSUE_ID,ISSUE_DATE,RETURN_DATE,COUNT(ISSUE_DATE-RETURN_DATE) "NO OF DAYS"
+FROM ISSUE;
+
+19)SELECT MEMBER_ID,MEMBER_NAME,ACC_OPEN_DATE,MAX_BOOKS_ALLOWED,PENALTY_AMOUNT
+FROM MEMBER
+ORDER BY 3 DESC;
+
+20)SELECT COUNT(BOOK_NO)
+FROM ISSUE
+WHERE MEMBER_ID=101;
+
+21)SELECT SUM(PENALTY_AMOUNT)
+FROM MEMBER;
+
+22)SELECT SUM(COST)
+FROM BOOK
+WHERE CATEGORY='DATABASE';
+
+23)SELECT BOOK_NAME,COST
+FROM BOOK ;
+
+24)SELECT BOOK_NO,MIN(ISSUE_DATE)
+FROM ISSUE;
+
+25)SELECT BOOK_NO,MAX(ISSUE_DATE)
+FROM ISSUE;
+
+26)SELECT AVG(COST)
+FROM BOOK
+WHERE CATEGORY='DATABASE';
+
+Part-3
+1)SELECT category, COUNT(*) as count FROM table GROUP BY category
+
+2) SELECT book_No , Issue Date FROM BOOKS
+ORDER BY book_No desc , Issue Date desc
+
+3)SELECT MIN(COST)FROM MEMBER
+  SELECT MAX(COST)FROM MEMBER
+  SELECT SUM(COST)FROM MEMBER
+  SELECT AVG(COST)FROM MEMBER
+
+4)SELECT a.Id, a.name, b.title, count(ba.idBook)
+FROM BookAuthors as ba
+JOIN Author as a
+ON ba.IdAuthor = a.Id
+JOIN book as b
+ON ba.idBook = b.id
+GROUP BY a.Id, a.name, b.title
+HAVING count(ba.idBook) > 1
+
+5)Select member_id,book_name from member order by member_id desc,book_name desc;
+
+6)select extract(month from sldate) as month, count(book_id) as number_books from books
+ group by sldate  
+order by book_id desc
+
+7)Select Book_ID from Members where Books.BookId=Not Issued.BookId;
+
+
+
+9)select member_id member,count(1) issue fromgroup by member_id)
+cntwhere max_issued.max_issue = cnt.issueunionselect cnt.member,min_issued.min_issue no_of_issues from
+(select min(issue) min_issue from (select member_id member,count(1) issue from ISS506880group by member_id))
+ min_issued,(select member_id member,count(1) issue from ISS506880group by member_id)cntwhere min_issued.min_issue = cnt.issue;
+
+12) select Member Id, Member Name,issue date from issue order by Member Id desc,Member Name desc , issue date desc
+
+13)select b.book_no, b.book_name,iss.issue_date, iss.return_date fromissue847 iss
+
+14)select * from members
+   where category = Database
+
+15)SELECT P.pro_name AS "Product Name", 
+       P.pro_price AS "Price", 
+       C.com_name AS "Company"
+   FROM item_mast P, company_mast C
+   WHERE P.pro_com = C.com_id
+     AND P.pro_price =
+     (
+       SELECT MAX(P.pro_price)
+         FROM item_mast P
+         WHERE P.pro_com = C.com_id
+     );
+
+16)select distinct i.* from issues506914 i,members506914 m
+where i.issue-date not between m.acc-open and i.return_date
+
+17)(select member_id from member506914)-(select member_id from issues506914)
+
+18) select top 1 book.bookid, book.bookname from
+(
+  select bookid, sum(qty) as s
+  from issue
+  where issuedate = @issuedate
+  group by bookid
+) grp
+inner join book 
+  on book.bookid = grp.bookid
+order by s
+
+21)SELECT a.Id, a.name, b.title, count(ba.idBook)
+FROM BookAuthors as ba
+JOIN Author as a
+ON ba.IdAuthor = a.Id
+JOIN book as b
+ON ba.idBook = b.id
+GROUP BY a.Id, a.name, b.title
+HAVING count(ba.idBook) > 1
+ 
+
+
+22)SELECT issue.member_id AS mem_id, member_name,
+       MAX(COUNT(issue.member_id)), MIN(COUNT(issue.member_id))
+  FROM issue
+  INNER JOIN member ON issue.member_id = member.member_id;
+23) SELECT  *FROM 
+    (
+    SELECT *FROM Bookss
+    ORDER BY Price desc
+    )
+WHERE rownum <= 3
+ORDER BY Price;
+
+24) SELECT SUM(P.Price) AS TOTALCOST FROM ISSUES I, Books B WHERE B.Book_No=I.Book_No AND I.Return_Date IS NULL.
+
+ 25)SELECT B.Book_No, B.Book_Name ,B.Author_Name, B.Cost, B.Category FROM Books B, Issues I 
+where B.Book_No=I.Book_No AND Count(I.Book_No)=MAX(I.Book_No)
+ GROUP BY I.Book_No;
